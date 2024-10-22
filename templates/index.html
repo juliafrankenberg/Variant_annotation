@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 50px;
+            text-align: center;
+        }
+        h1 {
+            color: #343a40;
+            margin-bottom: 20px;
+        }
+        .btn {
+            margin: 10px;
+            width: 200px; /* Make buttons uniform in size */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to the VCF Viewer</h1>
+        <p>Here you can annotate variants and view the resulting VCF file.</p>
+        
+        <!-- Annotate Variants Button -->
+        <button id="run-workflow" class="btn btn-success">Annotate Variants</button>
+        
+        <!-- View VCF Data Button -->
+        <a href="/get_vcf" class="btn btn-primary">View annotated variants</a>
+    </div>
+
+    <script>
+        document.getElementById('run-workflow').addEventListener('click', function() {
+            fetch('/run_workflow', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.message);
+                });
+        });
+    </script>
+</body>
+</html>

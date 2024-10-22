@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VCF Data Viewer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <style>
+        table {
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>VCF Data Viewer</h1>
+        <div class="form-group">
+            <label for="dpFilter">Filter by DP:</label>
+            <input type="number" id="dpFilter" class="form-control" placeholder="Enter minimum DP value">
+            <button id="dpFilterConfirm" class="btn btn-primary mt-2" onclick="filterVCF()">Filter</button>
+        </div>
+        <table class="table table-bordered" id="vcf-table">
+            <thead>
+                <tr>
+                    <th>Gene</th>
+                    <th>DP</th>
+                    <th>CHROM</th>
+                    <th>POS</th>
+                    <th>dbSNP</th>
+                    <th>REF</th>
+                    <th>ALT</th>
+                    <th>QUAL</th>
+                    <th>FILTER</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for variant in vcf_data %}
+                <tr>
+                    <td>{{ variant.Gene }}</td>
+                    <td>{{ variant.DP if variant.DP is not none else 'N/A' }}</td>
+                    <td>{{ variant.CHROM }}</td>
+                    <td>{{ variant.POS }}</td>
+                    <td>{{ variant.ID }}</td>
+                    <td>{{ variant.REF }}</td>
+                    <td>{{ variant.ALT }}</td>
+                    <td>{{ variant.QUAL }}</td>
+                    <td>{{ variant.FILTER }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% if not vcf_data %}
+        <div class="alert alert-warning">No VCF data available.</div>
+        {% endif %}
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            const table = $('#vcf-table').DataTable({
+                "paging": true,
+                "searching": true,
+                "info": false,
+                "lengthChange": false,
+                "pageLength": 100 // Number of rows per page
+            });
+        });
+
+        // Function to filter VCF data based on DP
+        function filterVCF() {
+            const minDP = document.getElementById('dpFilter').value;
+            // Redirect to the same page with the filter applied
+            window.location.href = `/get_vcf?min_dp=${minDP}`;
+        }
+    </script>
+</body>
+
+</html>
