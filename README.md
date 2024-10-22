@@ -19,7 +19,7 @@ This is a pipeline for basic annotation of VCF files, using snakemake, and that 
 
 I used conda, all packages listed in environment.yml; 
 
-#TO-DO: get docker image to work...
+TO-DO: get docker image to work...
 I've created a docker image "variant_ann", but haven't managed to get it to work...had some issue with ports, and cannot find snpeff command now, despite it apparently being there?
 
 
