@@ -21,6 +21,13 @@
             margin: 10px;
             width: 200px; /* Make buttons uniform in size */
         }
+        /* Loading indicator styles */
+        .loading {
+            display: none; /* Hidden by default */
+            margin-top: 20px;
+            font-size: 1.5rem;
+            color: #007bff;
+        }
     </style>
 </head>
 <body>
@@ -33,14 +40,28 @@
         
         <!-- View VCF Data Button -->
         <a href="/get_vcf" class="btn btn-primary">View annotated variants</a>
+        
+        <!-- Loading Indicator -->
+        <div id="loading" class="loading">Processing... Please wait.</div>
     </div>
 
     <script>
         document.getElementById('run-workflow').addEventListener('click', function() {
+            // Show the loading indicator
+            document.getElementById('loading').style.display = 'block';
+            
+            // Fetch the workflow
             fetch('/run_workflow', { method: 'POST' })
                 .then(response => response.json())
                 .then(data => {
+                    // Hide the loading indicator
+                    document.getElementById('loading').style.display = 'none';
                     alert(data.message);
+                })
+                .catch(error => {
+                    // Hide the loading indicator and handle any errors
+                    document.getElementById('loading').style.display = 'none';
+                    alert("An error occurred: " + error.message);
                 });
         });
     </script>
